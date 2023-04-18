@@ -1,12 +1,14 @@
-const holes = document.querySelectorAll(".hole");
+var holesAfterCreation;
 const scoreBoard = document.querySelector(".score");
-const moles = document.querySelectorAll(".mole");
+
 const button = document.querySelector(".start-game");
 let lastHole;
 let timeUp = false;
 let score = 0;
-
+const overlay = document.querySelector('.game-end-overlay');
+const value = document.getElementById('holes-input').valueAsNumber;
 //create a function to make a random time for mole to pop from the hole
+
 function randomTime(min, max) {
   return Math.round(Math.random() * (max - min) + min);
 }
@@ -22,13 +24,29 @@ function randomHole(holes) {
   lastHole = hole;
   return hole;
 }
-
+function addHoles(value){
+  var mainDiv = document.querySelector('.game')
+  
+  for(var i = 1;i<=value;i++){
+    var holeDiv = document.createElement('div')
+    var holeAttr = `hole hole${i}`;
+    holeDiv.setAttribute("class",holeAttr);
+    var moleDiv = document.createElement("div");
+    moleDiv.setAttribute("class","mole");
+    holeDiv.appendChild(moleDiv);
+    mainDiv.appendChild(holeDiv);
+  }
+  const holes = document.querySelectorAll(".hole");
+  holesAfterCreation = holes;
+  const moles = document.querySelectorAll(".mole");
+  moles.forEach((mole) => mole.addEventListener("click", wack));
+}
 function peep() {
-  const time = randomTime(500, 1000); //get a random time to determine how long mole should peep
-  const hole = randomHole(holes); //get the random hole from the randomHole function
-  hole.classList.add("up"); //add the CSS class so selected mole can "pop up"
+  const time = randomTime(500, 1000); 
+  const hole = randomHole(holesAfterCreation); 
+  hole.classList.add("up"); 
   setTimeout(() => {
-    hole.classList.remove("up"); //make the selected mole "pop down" after a random time
+    hole.classList.remove("up"); 
     if (!timeUp) {
       peep();
     }
@@ -36,6 +54,14 @@ function peep() {
 }
 
 function startGame() {
+  var mainDiv = document.querySelector('.game')
+  mainDiv.innerHTML='';
+  const value = document.getElementById('holes-input').valueAsNumber;
+  if(!value||value===0||value<0){
+    alert("Please enter a valid number")
+    return;
+  }
+  addHoles(value);
   scoreBoard.textContent = 0;
   button.setAttribute("disabled", true);
   timeUp = false;
@@ -54,4 +80,3 @@ function wack(e) {
   scoreBoard.textContent = score;
 }
 
-moles.forEach((mole) => mole.addEventListener("click", wack));

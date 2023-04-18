@@ -25,6 +25,14 @@ h1 {
     margin-left: 15px;
 }
 
+.hole-input{
+    padding: 10px 10px;
+    line-height: 1;
+    border-radius: 16px;
+    color: #fff;
+    margin-left: 15px;
+}
+
 .game {
     width: 600px;
     height: 400px;
@@ -64,6 +72,11 @@ h1 {
 
 .hole.up .mole{
     top:0;
+}
+
+.end-game-overlay{
+    background-color: #000000;
+    color: #FFFFFF;
 }
 
 button{
